@@ -16,6 +16,7 @@ const roles = [
   "Responsable cantine",
   "Responsable finance",
   "Responsable logistique",
+  "Responsable administratif",
   "Parent",
   "Student",
   "Responsable transport"
@@ -134,8 +135,8 @@ export default function RegisterPage() {
         'User already registered': "Compte existant",
         'Email rate limit exceeded': "Trop de tentatives - patientez 5 min"
       } as const;
-      
-      const message = error.message in errorMessages 
+
+      const message = error.message in errorMessages
         ? errorMessages[error.message as keyof typeof errorMessages]
         : "Erreur lors de l'inscription";
 

@@ -21,11 +21,14 @@ export default function LoginPage() {
 
   const redirectByRole = (role: string) => {
     const rolePaths: Record<string, string> = {
-      'Admin': '/admin/dashboard',
-      'Responsable cantine': '/cantine/dashboard',
-      'Responsable finance': '/finance/dashboard',
-      'Parent': '/parent/dashboard',
-      'Student': '/student/dashboard',
+      'Admin': '/Admin-dev/page.tsx',
+      'Responsable cantine': '/cantine/page.tsx',
+      'Responsable finance': '/finance/page.tsx',
+      'Parent': '/parent/page.tsx',
+      'Student': '/student/page.tsx',
+      'Responsable logistique': '/logistique/page.tsx',
+      'Responsable transport': '/transport/page.tsx',
+      'Responsable administratif':  '/administratif/page.tsx',
       'default': '/dashboard'
     };
     return rolePaths[role] || rolePaths.default;
@@ -42,7 +45,7 @@ export default function LoginPage() {
         email,
         password
       });
-      
+
       authData = data;
 
       if (error) {

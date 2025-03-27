@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { nhost } from "@/lib/nhost";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Mail } from "lucide-react";
 import Link from "next/link";
+import next from "next/types";
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState("");
@@ -22,7 +22,7 @@ export default function ResetPasswordPage() {
     setIsLoading(true);
 
     try {
-      const { error } = await nhost.auth.resetPassword({
+      const { error } = await next.auth.resetPassword({
         email,
       });
 
