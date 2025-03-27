@@ -1,0 +1,153 @@
+Structure du projet (exclusions : node_modules, nhost, .vscode, .nuxt, .output, .git, .bolt, .next)
+========================================
+
+📄 .env
+📄 .eslintrc.json
+📄 .gitignore
+📁 app
+  📁 auth
+    📁 callback
+      📄 route.ts
+    📁 login
+      📄 page.tsx
+    📁 register
+      📄 page.tsx
+    📁 reset-password
+      📄 page.tsx
+  📁 chatbot
+    📄 page.tsx
+  📁 dashboard
+    📁 admin-dev
+      📄 page.tsx
+    📁 canteen
+      📄 page.tsx
+    📁 finance
+      📄 page.tsx
+    📄 layout.tsx
+    📁 logistics
+      📄 page.tsx
+    📄 page.tsx
+    📁 parent
+      📄 page.tsx
+    📁 school-admin
+      📄 page.tsx
+    📁 student
+      📄 page.tsx
+    📁 transport
+      📄 page.tsx
+  📄 globals.css
+  📄 layout.tsx
+  📄 page.tsx
+  📄 providers.tsx
+  📁 scanner
+    📄 page.tsx
+  📁 wallet
+    📄 page.tsx
+📁 components
+  📄 footer.tsx
+  📄 header.tsx
+  📄 sidebar.tsx
+  📄 theme-provider.tsx
+  📁 ui
+    📄 .env
+    📄 accordion.tsx
+    📄 alert-dialog.tsx
+    📄 alert.tsx
+    📄 aspect-ratio.tsx
+    📄 avatar.tsx
+    📄 badge.tsx
+    📄 breadcrumb.tsx
+    📄 button.tsx
+    📄 calendar.tsx
+    📄 card.tsx
+    📄 carousel.tsx
+    📄 chart.tsx
+    📄 checkbox.tsx
+    📄 collapsible.tsx
+    📄 command.tsx
+    📄 context-menu.tsx
+    📄 dialog.tsx
+    📄 drawer.tsx
+    📄 dropdown-menu.tsx
+    📄 form.tsx
+    📄 hover-card.tsx
+    📄 input-otp.tsx
+    📄 input.tsx
+    📄 label.tsx
+    📄 menubar.tsx
+    📄 navigation-menu.tsx
+    📄 pagination.tsx
+    📄 popover.tsx
+    📄 progress.tsx
+    📄 radio-group.tsx
+    📄 resizable.tsx
+    📄 scroll-area.tsx
+    📄 select.tsx
+    📄 separator.tsx
+    📄 sheet.tsx
+    📄 skeleton.tsx
+    📄 slider.tsx
+    📄 sonner.tsx
+    📄 switch.tsx
+    📄 table.tsx
+    📄 tabs.tsx
+    📄 textarea.tsx
+    📄 toast.tsx
+    📄 toaster.tsx
+    📄 toggle-group.tsx
+    📄 toggle.tsx
+    📄 tooltip.tsx
+    📄 use-toast.ts
+📄 components.json
+📁 hooks
+  📄 use-auth.ts
+  📄 use-role-access.ts
+  📄 use-toast.ts
+📁 lib
+  📄 nhost.ts
+  📄 supabase.ts
+  📄 utils.ts
+📄 liste.js
+📄 middleware.ts
+📄 next-env.d.ts
+📄 next.config.js
+📄 package-lock.json
+📄 package.json
+📄 postcss.config.js
+📄 project_structure.txt
+📁 public
+  📁 images
+    📁 activity
+      📄 activity.png
+    📁 cantine
+      📄 cantine01.png
+      📄 cantine02.png
+    📁 logo
+      📄 Logo.png
+      📄 Logo01.png
+      📄 Logo02.png
+      📄 Logo03.png
+      📄 Logo04.png
+      📄 Logo5.png
+      📄 Logo7.png
+    📁 QRCode
+      📄 QRCode.png
+      📄 QRCode02.png
+      📄 QRCode03.png
+    📁 school
+      📄 school.png
+    📁 Student
+      📄 student01.png
+      📄 student02.png
+      📄 student03.png
+    📁 transport
+      📄 bus01.png
+      📄 bus02.png
+📄 README.md
+📁 supabase
+  📁 migrations
+    📄 20250325140105_graceful_wildflower.sql
+📄 tailwind.config.ts
+📄 tsconfig.json
+📁 types
+  📄 user.ts

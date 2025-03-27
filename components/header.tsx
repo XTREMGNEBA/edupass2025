@@ -1,3 +1,4 @@
+// components\header.tsx
 'use client';
 
 import { MoonIcon, SunIcon } from 'lucide-react';
@@ -50,8 +51,8 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
-          <Image 
-            src="/images/logo/Logo.png" 
+          <Image
+            src="/images/logo/Logo.png"
             alt="SchoolConnect Logo"
             width={40}
             height={40}
@@ -96,7 +97,25 @@ export function Header() {
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              
+
+              {/* Liens vers les sections de la page d'accueil */}
+              <NavigationMenuItem>
+                <Link href="#features" legacyBehavior passHref>
+                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                    Fonctionnalités
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <Link href="#contact" legacyBehavior passHref>
+                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                    Contact
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              {/* Autres liens */}
               <NavigationMenuItem>
                 <Link href="/chatbot" legacyBehavior passHref>
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
@@ -119,7 +138,7 @@ export function Header() {
             <MoonIcon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             <span className="sr-only">Changer le thème</span>
           </Button>
-          
+
           {!isLoading && (
             <Button variant="default" asChild>
               <Link href={isAuthenticated ? "/dashboard" : "/auth/login"}>
