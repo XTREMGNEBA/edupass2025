@@ -21,7 +21,7 @@ export default function LoginPage() {
 
   const redirectByRole = (role: string) => {
     const rolePaths: Record<string, string> = {
-      'Admin': '/Admin-dev/page.tsx',
+      'Admin': '/admin/page.tsx',
       'Responsable cantine': '/cantine/page.tsx',
       'Responsable finance': '/finance/page.tsx',
       'Parent': '/parent/page.tsx',

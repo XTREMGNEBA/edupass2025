@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Mail } from "lucide-react";
 import Link from "next/link";
-import next from "next/types";
+import Image from "next/image";
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState("");
@@ -16,19 +17,16 @@ export default function ResetPasswordPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
 
-  // Fonction de réinitialisation du mot de passe
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const { error } = await next.auth.resetPassword({
-        email,
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback`,
       });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       setIsSuccess(true);
       toast({
@@ -50,10 +48,19 @@ export default function ResetPasswordPage() {
     <div className="container mx-auto flex h-screen items-center justify-center">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">
+          <div className="flex justify-center mb-4">
+            <Image
+              src="/images/logo/Logo.png"
+              alt="EduPass+ Logo"
+              width={80}
+              height={80}
+              className="h-20 w-auto"
+            />
+          </div>
+          <CardTitle className="text-2xl font-bold text-center">
             Réinitialisation du mot de passe
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-center">
             Entrez votre email pour recevoir un lien de réinitialisation
           </CardDescription>
         </CardHeader>
