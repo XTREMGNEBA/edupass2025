@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Nouvelle palette ajustée */
+  --wa-green: 142 70% 49%;
+  --wa-green-dark: 142 70% 40%;
+  --wa-teal: 180 50% 40%;  /* Teal plus doux */
+  --wa-light-bg: 0 0% 98%;
+  --wa-dark-bg: 210 12% 16%; /* Bleu-gris plus doux */
+  --wa-chat-light: 0 0% 100%;
+  --wa-chat-dark: 210 14% 22%; /* Cartes plus visibles */
+}
+
+@layer base {
+  :root {
+    /* Light theme (inchangé) */
+    --background: var(--wa-light-bg);
+    --foreground: 0 0% 13%;
+    --card: var(--wa-chat-light);
+    --card-foreground: 0 0% 13%;
+    --popover: var(--wa-chat-light);
+    --popover-foreground: 0 0% 13%;
+    --primary: var(--wa-green);
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 95%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --border: 0 0% 89%;
+    --input: 0 0% 95%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark theme révisé */
+    --background: var(--wa-dark-bg);
+    --foreground: 0 0% 90%; /* Texte moins agressif */
+    --card: var(--wa-chat-dark);
+    --card-foreground: 0 0% 90%;
+    --popover: var(--wa-chat-dark);
+    --popover-foreground: 0 0% 90%;
+    --primary: var(--wa-teal); /* Teal plus doux que le vert */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 14% 26%; /* Fond de survol */
+    --muted: 210 12% 20%;
+    --muted-foreground: 210 15% 65%; /* Texte secondaire plus lisible */
+    --border: 210 10% 30%; /* Bordures plus visibles */
+    --input: 210 14% 22%;
+    --accent: 210 20% 28%; /* Pour les états actifs */
+  }
+}
+
+@layer components {
+  /* Sous-menus améliorés */
+  .wa-dropdown-content {
+    @apply bg-popover border border-border rounded-lg shadow-xl py-1 min-w-[180px];
+
+    .wa-dropdown-item {
+      @apply px-4 py-2 text-sm flex items-center hover:bg-secondary bg-primaryransition-colors;
+
+      &[data-highlighted] {
+        @apply bg-secondary;
+      }
+
+      &[data-disabled] {
+        @apply text-muted-foreground opacity-50 pointer-events-none;
+      }
+    }
+
+    .wa-dropdown-separator {
+      @apply h-px bg-border my-1;
+    }
+
+    .wa-dropdown-label {
+      @apply px-4 py-1 text-xs text-muted-foreground font-semibold;
+    }
+  }
+
+  /* Cartes avec meilleur contraste */
+  .wa-chat-card {
+    @apply bg-card border border-border/50 rounded-2xl p-4 shadow;
+    transition: all 0.2s ease;
+
+    &:hover {
+      @apply border-primary/30 shadow-md;
+    }
+  }
+
+  /* Boutons révisés */
+  .btn-wa {
+    @apply bg-primary text-primary-foreground px-5 py-2 rounded-full
+           font-medium hover:bg-primary/80 active:scale-[0.98] transition-all;
+  }
+}
+
+/* Animation plus subtile */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wa-animate {
+  animation: fadeIn 0.18s ease-out;
+}
