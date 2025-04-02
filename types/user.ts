@@ -1,3 +1,5 @@
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+
 export type UserRole =
   | 'ADMIN'
   | 'RESPONSABLE_CANTINE'
@@ -7,6 +9,8 @@ export type UserRole =
   | 'RESPONSABLE_ADMINISTRATIF'
   | 'PARENT'
   | 'STUDENT';
+
+export type User = SupabaseUser;
 
 export const ROLE_ROUTES: Record<UserRole, string> = {
   ADMIN: '/dashboard/admin',

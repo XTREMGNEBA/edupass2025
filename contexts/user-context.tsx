@@ -2,19 +2,22 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import type { UserProfile } from '@/types/user';
+import type { UserProfile, User } from '@/types/user';
 
 interface UserContextType {
+  user: User | null;
   profile: UserProfile | null;
   isLoading: boolean;
   error: Error | null;
   refreshProfile: () => Promise<void>;
+  updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -26,6 +29,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       if (sessionError) throw sessionError;
       if (!session?.user) {
         setProfile(null);
+        setUser(null);
         return;
       }
 
@@ -37,10 +41,33 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
       if (profileError) throw profileError;
       setProfile(data);
+      setUser(session.user);
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to fetch profile'));
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const updateProfile = async (data: Partial<UserProfile>) => {
+    try {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) throw sessionError;
+      if (!session?.user) {
+        throw new Error('User is not logged in');
+      }
+
+      const { data: updatedProfile, error: profileError } = await supabase
+        .from('profiles')
+        .update(data)
+        .eq('id', session.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+      setProfile(updatedProfile);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Failed to update profile'));
     }
   };
 
@@ -61,7 +88,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ profile, isLoading, error, refreshProfile: fetchProfile }}>
+    <UserContext.Provider value={{ user, profile, isLoading, error, refreshProfile: fetchProfile, updateProfile }}>
       {children}
     </UserContext.Provider>
   );

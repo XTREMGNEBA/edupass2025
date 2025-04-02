@@ -49,7 +49,7 @@ export default function SchoolAdminDashboard() {
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Administration Scolaire</h1>
+        <h1 className="text-3xl font-bold">Administration</h1>
         <Button>
           <UserPlus className="mr-2 h-4 w-4" />
           Nouvel élève
