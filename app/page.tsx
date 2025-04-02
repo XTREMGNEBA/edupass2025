@@ -21,7 +21,7 @@ export default function Home() {
     "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920"
   );
   const bgImage1 = useImageExistence(
-    "/images/badge/badge01.png",
+    "/images/badge/badge02.png",
     "https://images.unsplash.com/photo-1522252234503-e356532cafd5?w=500&h=300&fit=crop"
   );
   const bgImage2 = useImageExistence(

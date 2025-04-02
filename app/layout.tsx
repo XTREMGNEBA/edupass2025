@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/header';
 import { Providers } from './providers';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   preload: true,
@@ -28,7 +28,7 @@ export default function RootLayout({
         <Providers>
           <div className="min-h-screen bg-background">
             <Header />
-            {children}
+            <main className="pt-16">{children}</main>
           </div>
           <Toaster />
         </Providers>

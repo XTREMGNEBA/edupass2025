@@ -154,13 +154,13 @@ export default function RegisterPage() {
     <div className="container mx-auto flex min-h-screen items-center justify-center px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+          <div className="  flex justify-center mb-4">
             <Image
               src="/images/logo/Logo.png"
               alt="EduPass+ Logo"
               width={80}
               height={80}
-              className="h-20 w-auto"
+              className="rounded-lg h-20 w-auto"
               priority
             />
           </div>

@@ -41,7 +41,7 @@ const features = [
     title: "Activités",
     href: "/activities",
     description: "Participez aux activités parascolaires",
-    image: "/images/activity/activity.png",
+    image: "/images/activity/sport04.png",
   },
 ];
 
@@ -57,13 +57,13 @@ export function PublicHeader() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="rounded-lg flex items-center space-x-2">
             <Image
               src="/images/logo/Logo.png"
               alt="EduPass+ Logo"
               width={32}
               height={32}
-              className="h-8 w-auto"
+              className="rounded-lg h-8 w-auto"
               priority
             />
             <span className="hidden font-bold sm:inline-block">EduPass+</span>
@@ -91,7 +91,7 @@ export function PublicHeader() {
                                 alt={feature.title}
                                 width={36}
                                 height={36}
-                                className="h-9 w-9 rounded-lg"
+                                className="h-12 w-12 rounded-lg"
                               />
                               <div>
                                 <div className="text-sm font-medium">{feature.title}</div>

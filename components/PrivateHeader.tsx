@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,38 +17,50 @@ export function PrivateHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { profile, isLoading } = useUserProfile();
-  const { signOut, isAuthenticated } = useAuth();  // Vérification de l'authentification
-
+  const { signOut, isAuthenticated } = useAuth();
   const menuItems = profile?.role ? ROLE_MENUS[profile.role] : [];
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   if (isLoading) {
     return null;
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 backdrop-blur-md border-b ${
+        isScrolled ? 'bg-white dark:bg-gray-900 shadow-md' : 'bg-transparent'
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between">
-          <Link href="/dashboard" className="flex items-center space-x-2">
+          <Link href="/dashboard" className="  flex items-center space-x-2">
             <Image
               src="/images/logo/Logo.png"
               alt="EduPass+ Logo"
               width={30}
               height={30}
-              className="h-6 w-auto"
+              className="rounded-lg h-6 w-auto"
               priority
             />
-            <span className="hidden font-bold sm:inline-block">
-              EduPass+
-            </span>
+            <span className="hidden font-bold sm:inline-block">EduPass+</span>
           </Link>
 
           {isAuthenticated && (
-            <nav className="hidden md:flex space-x-4 ">
+            <nav className="hidden md:flex space-x-4">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}

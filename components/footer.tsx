@@ -11,13 +11,13 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           {/* Brand Section */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image 
-                src="/images/logo/Logo.png" 
+            <Link href="/" className="rounded-lg flex items-center space-x-2">
+              <Image
+                src="/images/logo/Logo.png"
                 alt="EduPass+ Logo"
                 width={40}
                 height={40}
-                className="h-8 w-auto"
+                className="rounded-lg h-8 w-auto"
               />
               <span className="font-bold text-xl">EduPass+</span>
             </Link>

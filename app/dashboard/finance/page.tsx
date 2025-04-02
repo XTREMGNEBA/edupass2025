@@ -87,7 +87,7 @@ export default function FinanceDashboard() {
             <CardHeader>
               <div className="flex items-center space-x-4">
                 <stat.icon className="h-6 w-6 text-primary" />
-                
+
                 <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
               </div>
             </CardHeader>
@@ -205,7 +205,7 @@ export default function FinanceDashboard() {
                 </div>
                 <div className="flex items-center text-red-500">
                   <AlertTriangle className="h-4 w-4 mr-2" />
-                  <span>1 paiement en attente > 7 jours</span>
+                  <span>1 paiement en attente   7 jours</span>
                 </div>
                 <Button className="w-full mt-2">Gérer les alertes</Button>
               </div>
