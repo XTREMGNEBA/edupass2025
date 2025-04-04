@@ -1,5 +1,3 @@
-'use client';
-
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { UserRole } from '@/types/user';
 
@@ -16,18 +14,11 @@ export const supabase = createClientComponentClient({
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
   supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   options: {
-    global: {
-      headers: {
-        'x-my-custom-header': 'my-app-name',
-      },
-    },
-  },
-  cookieOptions: {
-    name: 'sb-auth-token',
-    path: '/',
-    sameSite: 'lax',
-    secure: true,
-    domain: ''
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
   }
 });
 
@@ -49,57 +40,7 @@ export const getErrorMessage = (error: any): string => {
   const defaultMessage = 'Une erreur est survenue';
   if (!error) return defaultMessage;
   
-  // Gestion spécifique des erreurs de stockage
-  if (error.message?.includes('storage')) {
-    if (error.message.includes('File size exceeds')) return AUTH_ERROR_MESSAGES['File too large'];
-    if (error.message.includes('invalid file type')) return AUTH_ERROR_MESSAGES['Invalid file type'];
-    return AUTH_ERROR_MESSAGES['Storage error'];
-  }
-
   return AUTH_ERROR_MESSAGES[error.message] || error.message || defaultMessage;
-};
-
-// Fonction pour uploader un avatar
-const uploadAvatar = async (userId: string, file: File) => {
-  console.log('Tentative d\'upload d\'avatar pour l\'utilisateur:', userId);
-  const validTypes = ['image/png', 'image/jpeg', 'image/gif'];
-  const maxSize = 5 * 1024 * 1024; // 5MB
-
-  if (!validTypes.includes(file.type)) {
-    console.error('Type de fichier invalide:', file.type);
-    throw new Error(AUTH_ERROR_MESSAGES['Invalid file type']);
-  }
-
-  if (file.size > maxSize) {
-    console.error('Fichier trop volumineux:', file.size);
-    throw new Error(AUTH_ERROR_MESSAGES['File too large']);
-  }
-
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${userId}/avatar.${fileExt}`;
-
-  console.log('Upload du fichier:', fileName);
-  await supabase.storage
-    .from('avatars')
-    .remove([fileName]);
-   const { error } = await supabase.storage
-    .from('avatars')
-    .upload(fileName, file, {
-      cacheControl: '3600',
-      contentType: file.type
-    });
-
-  if (error) {
-    console.error('Erreur lors de l\'upload:', error);
-    throw error;
-  }
-
-  const { data: { publicUrl } } = supabase.storage
-    .from('avatars')
-    .getPublicUrl(fileName);
-
-  console.log('Upload réussi, URL publique:', publicUrl);
-  return publicUrl;
 };
 
 // Fonction d'inscription
@@ -114,58 +55,23 @@ export const signUp = async (
     avatar?: File;
   }
 ) => {
-  console.log('Tentative d\'inscription avec les données:', { email, userData });
   try {
-    // Validation des données
-    if (!email || !password || !userData.firstName || !userData.lastName) {
-      throw new Error('Tous les champs obligatoires doivent être remplis');
-    }
-
-    // Upload de l'avatar si fourni
-    let avatarUrl = null;
-    if (userData.avatar) {
-      console.log('Upload de l\'avatar...');
-      avatarUrl = await uploadAvatar(email, userData.avatar);
-    }
-
-    // Création du compte
-    console.log('Création du compte dans Supabase Auth...');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
-          ...userData,
-          avatar_url: avatarUrl,
-          full_name: `${userData.firstName} ${userData.lastName}`
+          first_name: userData.firstName,
+          last_name: userData.lastName,
+          role: userData.role,
+          phone: userData.phone
         },
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
+        emailRedirectTo: `${window.location.origin}/auth/callback`
+      }
     });
 
     if (error) throw error;
 
-    console.log('Compte créé, données utilisateur:', data.user);
-
-    // Création du profil dans la table profiles
-    if (data.user) {
-      console.log('Création du profil dans la table profiles...');
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .upsert({
-          id: data.user.id,
-          email,
-          first_name: userData.firstName,
-          last_name: userData.lastName,
-          role: userData.role,
-          phone: userData.phone,
-          avatar_url: avatarUrl
-        });
-
-      if (profileError) throw profileError;
-    }
-
-    console.log('Inscription complétée avec succès');
     return { user: data.user, error: null };
   } catch (error: any) {
     console.error('Erreur lors de l\'inscription:', error);
@@ -177,12 +83,9 @@ export const signUp = async (
 export const signOut = async () => {
   try {
     const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Erreur lors de la déconnexion:', error);
-      return { error: getErrorMessage(error) };
-    }
+    if (error) throw error;
     return { error: null };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur lors de la déconnexion:', error);
     return { error: getErrorMessage(error) };
   }
@@ -191,16 +94,16 @@ export const signOut = async () => {
 // Fonction pour récupérer le rôle de l'utilisateur
 export const getUserRole = async (): Promise<UserRole | null> => {
   try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return null;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session?.user) return null;
 
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
-      .eq('id', user.id)
+      .eq('id', session.user.id)
       .single();
 
-    return profile?.role || user.user_metadata?.role || null;
+    return profile?.role || null;
   } catch (error) {
     console.error('Erreur lors de la récupération du rôle:', error);
     return null;

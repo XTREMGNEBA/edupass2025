@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Loader2 } from "lucide-react";
 import { ROLE_ROUTES } from "@/types/user";
+import { useUser } from "@/contexts/user-context";
 
 export default function DashboardLayout({
   children,
@@ -13,6 +14,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const { user, profile, isLoading: userLoading } = useUser();
   const supabase = createClientComponentClient();
 
   useEffect(() => {
@@ -25,19 +27,13 @@ export default function DashboardLayout({
           return;
         }
 
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .single();
-
         if (!profile) {
           router.push("/auth/login");
           return;
         }
 
         const currentPath = window.location.pathname;
-        const expectedPath = ROLE_ROUTES[profile.role as keyof typeof ROLE_ROUTES];
+        const expectedPath = ROLE_ROUTES[profile.role];
 
         if (!currentPath.startsWith(expectedPath)) {
           router.push(expectedPath);
@@ -51,10 +47,12 @@ export default function DashboardLayout({
       }
     };
 
-    checkAuthAndRole();
-  }, [router, supabase]);
+    if (!userLoading) {
+      checkAuthAndRole();
+    }
+  }, [router, supabase, profile, userLoading]);
 
-  if (loading) {
+  if (loading || userLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />

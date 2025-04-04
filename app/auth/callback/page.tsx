@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Loader2 } from 'lucide-react';
-import { UserRole } from '@/types/user';
+import { UserRole, ROLE_ROUTES } from '@/types/user';
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -20,7 +20,6 @@ export default function AuthCallbackPage() {
 
       // Vérifier si l'email est confirmé
       if (!session.user.email_confirmed_at) {
-        // L'email n'est pas confirmé
         console.error('Email non confirmé');
         router.push('/auth/confirm-email');
         return;
@@ -46,7 +45,6 @@ export default function AuthCallbackPage() {
                 first_name: session.user.user_metadata?.firstName,
                 last_name: session.user.user_metadata?.lastName,
                 phone: session.user.user_metadata?.phone,
-                phoneNumber: session.user.user_metadata?.phone,
                 created_at: new Date().toISOString()
               }
             ])
@@ -63,7 +61,8 @@ export default function AuthCallbackPage() {
         }
 
         // Redirection basée sur le rôle
-        const redirectPath = getRedirectPathForRole(profile.role as UserRole);
+        const userRole = profile.role as UserRole;
+        const redirectPath = ROLE_ROUTES[userRole] || '/dashboard';
         router.push(redirectPath);
       } catch (error) {
         console.error('Erreur de redirection:', error);
@@ -80,19 +79,4 @@ export default function AuthCallbackPage() {
       <p className="ml-4 text-lg">Redirection en cours...</p>
     </div>
   );
-}
-
-function getRedirectPathForRole(role: UserRole): string {
-  const roleRedirects: Record<string, string> = {
-    'ADMIN': '/dashboard/admin',
-    'RESPONSABLE_CANTINE': '/dashboard/cantine',
-    'RESPONSABLE_FINANCE': '/dashboard/finance',
-    'RESPONSABLE_LOGISTIQUE': '/dashboard/logistique',
-    'RESPONSABLE_TRANSPORT': '/dashboard/transport',
-    'RESPONSABLE_ADMINISTRATIF': '/dashboard/administratif',
-    'PARENT': '/dashboard/parent',
-    'STUDENT': '/dashboard/student'
-  };
-
-  return roleRedirects[role] || '/dashboard';
 }

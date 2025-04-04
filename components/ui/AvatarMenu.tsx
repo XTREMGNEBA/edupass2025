@@ -12,8 +12,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User, Settings, LogOut, CreditCard, LayoutDashboard } from 'lucide-react';
-import { signOut } from '@/lib/supabase';
+import { 
+  User, 
+  Settings, 
+  LogOut, 
+  CreditCard, 
+  LayoutDashboard,
+  Bell,
+  Shield,
+  HelpCircle,
+  Mail 
+} from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
 import type { UserProfile } from '@/types/user';
 import { ROLE_ROUTES } from '@/types/user';
 
@@ -24,23 +34,12 @@ interface AvatarMenuProps {
 export function AvatarMenu({ profile }: AvatarMenuProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const { signOut } = useAuth();
 
   const handleSignOut = async () => {
-    console.log("Tentative de déconnexion...");
-    const { error } = await signOut();
-
-    if (error) {
-      console.error("Erreur de déconnexion:", error);
-      // You might want to show an error message to the user here
-    } else {
-      console.log("Déconnexion réussie !");
-      setIsOpen(false); // Close the dropdown menu
-      router.push('/auth/login');
-      router.refresh(); // Refresh after navigation
-    }
+    await signOut();
+    setIsOpen(false);
   };
-
-
 
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName[0]}${lastName[0]}`.toUpperCase();
@@ -75,29 +74,56 @@ export function AvatarMenu({ profile }: AvatarMenuProps) {
             <p className="text-xs leading-none text-muted-foreground">
               {profile.email}
             </p>
+            <p className="text-xs text-primary">
+              {profile.role.replace('_', ' ').toLowerCase()}
+            </p>
           </div>
         </DropdownMenuLabel>
+        
         <DropdownMenuSeparator />
+        
         <DropdownMenuItem onClick={() => router.push(getDashboardLink())}>
           <LayoutDashboard className="mr-2 h-4 w-4" />
-          <span>Dashboard</span>
+          <span>Tableau de bord</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push('/profile')}>
+        
+        <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
           <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+          <span>Mon profil</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push('/settings')}>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
+
+        <DropdownMenuItem onClick={() => router.push('/dashboard/profile?tab=notifications')}>
+          <Bell className="mr-2 h-4 w-4" />
+          <span>Notifications</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push('/upgrade')}>
+
+        <DropdownMenuItem onClick={() => router.push('/dashboard/profile?tab=security')}>
+          <Shield className="mr-2 h-4 w-4" />
+          <span>Sécurité</span>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onClick={() => router.push('/dashboard/profile?tab=billing')}>
           <CreditCard className="mr-2 h-4 w-4" />
-          <span>Upgrade Plan</span>
+          <span>Paiements</span>
         </DropdownMenuItem>
+
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleSignOut}>
+
+        <DropdownMenuItem onClick={() => router.push('/help')}>
+          <HelpCircle className="mr-2 h-4 w-4" />
+          <span>Aide</span>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onClick={() => router.push('/contact')}>
+          <Mail className="mr-2 h-4 w-4" />
+          <span>Contact</span>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem onClick={handleSignOut} className="text-red-500 focus:text-red-500">
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>Déconnexion</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

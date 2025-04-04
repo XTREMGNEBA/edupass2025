@@ -48,11 +48,14 @@ const features = [
 export function PublicHeader() {
   const { menuItems, isScrolled } = usePublicNavigation();
   const { isAuthenticated } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 backdrop-blur-md border-b
-        ${isScrolled ? "bg-white/80 dark:bg-gray-900/80 shadow-md" : "bg-white/40 dark:bg-gray-900/40"}`}
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 border-b
+        ${isScrolled 
+          ? "bg-white/95 dark:bg-gray-900/95 shadow-md backdrop-blur-sm" 
+          : "bg-white/80 dark:bg-gray-900/80"}`}
     >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
@@ -71,7 +74,7 @@ export function PublicHeader() {
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList className="gap-4"> {/* Utilisez gap pour un espacement uniforme */}
+            <NavigationMenuList className="gap-4">
               <NavigationMenuItem className="mx-2">
                 <NavigationMenuTrigger className="data-[state=open]:bg-accent/50">
                   Services
@@ -141,9 +144,9 @@ export function PublicHeader() {
             </div>
 
             {/* Mobile Menu */}
-            <Sheet>
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu">
+                <Button variant="ghost" size="icon" className="md:hidden">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -154,6 +157,7 @@ export function PublicHeader() {
                       key={item.href}
                       href={item.href}
                       className="flex items-center space-x-2 text-sm"
+                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.label}
                     </Link>

@@ -1,60 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { MoonIcon, SunIcon, Menu } from "lucide-react";
-import { AvatarMenu } from "@/components/ui/AvatarMenu";
-import { useUserProfile } from "@/hooks/useUserProfile";
 import { PublicHeader } from "./PublicHeader";
 import { PrivateHeader } from "./PrivateHeader";
-
-const features = [
-  {
-    title: "Scanner QR Code",
-    href: "/scanner",
-    description: "Scannez votre QR Code pour accéder aux services",
-    image: "/images/QRCode/QRCode.png",
-  },
-  {
-    title: "Cantine",
-    href: "/cantine",
-    description: "Gérez vos repas et consultez les menus",
-    image: "/images/cantine/cantine01.png",
-  },
-  {
-    title: "Transport",
-    href: "/transport",
-    description: "Suivez les bus scolaires en temps réel",
-    image: "/images/transport/bus01.png",
-  },
-  {
-    title: "Activités",
-    href: "/activities",
-    description: "Participez aux activités parascolaires",
-    image: "/images/activity/activity.png",
-  },
-];
+import { Loader2 } from "lucide-react";
 
 export function Header() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Show loading state during initial auth check
+  if (!mounted || isLoading) {
+    return (
+      <div className="fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-center bg-background border-b">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
+
+  // Render appropriate header based on auth state
   return isAuthenticated ? <PrivateHeader /> : <PublicHeader />;
 }

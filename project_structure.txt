@@ -1,0 +1,209 @@
+Structure du projet (exclusions : node_modules, nhost, .vscode, .nuxt, .output, .git, .bolt, .next)
+========================================
+
+📄 .env
+📄 .eslintrc.json
+📄 .gitignore
+📄 README.md
+📁 app
+  📁 api
+    📁 profile
+      📁 [userId]
+        📄 route.ts
+  📁 auth
+    📁 callback
+      📄 page.tsx
+      📄 route.ts
+    📁 login
+      📄 page.tsx
+    📁 register
+      📄 page.tsx
+    📁 reset-password
+      📄 page.tsx
+  📁 chatbot
+    📄 page.tsx
+  📁 dashboard
+    📁 admin
+      📄 page.tsx
+    📁 administratif
+      📄 page.tsx
+    📁 cantine
+      📄 page.tsx
+    📁 finance
+      📄 page.tsx
+    📄 layout.tsx
+    📁 logistique
+      📄 page.tsx
+    📄 page.tsx
+    📁 parent
+      📄 page.tsx
+    📁 profile
+      📄 avatar-upload.tsx
+      📄 page.tsx
+      📄 profile-form.tsx
+    📁 student
+      📄 page.tsx
+    📁 transport
+      📄 page.tsx
+  📄 globals.css
+  📄 layout.tsx
+  📄 page.tsx
+  📄 providers.tsx
+  📁 scanner
+    📄 page.tsx
+  📁 wallet
+    📄 page.tsx
+📁 components
+  📄 PrivateHeader.tsx
+  📄 PublicHeader.tsx
+  📄 footer.tsx
+  📄 header.tsx
+  📄 sidebar.tsx
+  📄 theme-provider.tsx
+  📄 theme-toggle.tsx
+  📁 ui
+    📄 AvatarMenu.tsx
+    📄 accordion.tsx
+    📄 alert-dialog.tsx
+    📄 alert.tsx
+    📄 aspect-ratio.tsx
+    📄 avatar.tsx
+    📄 badge.tsx
+    📄 breadcrumb.tsx
+    📄 button.tsx
+    📄 calendar.tsx
+    📄 card.tsx
+    📄 carousel.tsx
+    📄 chart.tsx
+    📄 checkbox.tsx
+    📄 collapsible.tsx
+    📄 command.tsx
+    📄 context-menu.tsx
+    📄 dialog.tsx
+    📄 drawer.tsx
+    📄 dropdown-menu.tsx
+    📄 form.tsx
+    📄 hover-card.tsx
+    📄 input-otp.tsx
+    📄 input.tsx
+    📄 label.tsx
+    📄 loader.tsx
+    📄 menubar.tsx
+    📄 navigation-menu.tsx
+    📄 pagination.tsx
+    📄 popover.tsx
+    📄 progress.tsx
+    📄 radio-group.tsx
+    📄 resizable.tsx
+    📄 scroll-area.tsx
+    📄 select.tsx
+    📄 separator.tsx
+    📄 sheet.tsx
+    📄 skeleton.tsx
+    📄 slider.tsx
+    📄 sonner.tsx
+    📄 switch.tsx
+    📄 table.tsx
+    📄 tabs.tsx
+    📄 textarea.tsx
+    📄 toast.tsx
+    📄 toaster.tsx
+    📄 toggle-group.tsx
+    📄 toggle.tsx
+    📄 tooltip.tsx
+    📄 use-toast.ts
+📄 components.json
+📁 config
+  📄 public-menu.ts
+  📄 role-menus.tsx
+📁 contexts
+  📄 user-context.tsx
+📁 docs
+  📄 GUIDE.md
+📁 hooks
+  📄 use-auth.ts
+  📄 use-role-access.ts
+  📄 use-toast.ts
+  📄 useImageExistence.ts
+  📄 usePublicNavigation.ts
+  📄 useRoleAccess.ts
+  📄 useUserProfile.ts
+📄 infos.md
+📁 lib
+  📄 api.ts
+  📁 supabase
+    📄 client.ts
+  📄 supabase.ts
+  📄 utils.ts
+📄 liste.mjs
+📄 middleware.ts
+📄 next.config.js
+📄 package-lock.json
+📄 package.json
+📄 postcss.config.js
+📄 project_structure.txt
+📄 project_structure_3.txt
+📁 public
+  📁 images
+    📁 QRCode
+      📄 QRCode.png
+      📄 QRCode02.png
+      📄 QRCode03.png
+    📁 Student
+      📄 student01.png
+      📄 student02.png
+      📄 student03.png
+    📁 activity
+      📄 activity.png
+      📄 sport01.jpg
+      📄 sport01.png
+      📄 sport02.jpg
+      📄 sport02.png
+      📄 sport04.jpg
+      📄 sport04.png
+    📁 badge
+      📄 badge01.png
+      📄 badge02.png
+    📁 bg
+      📄 bg01.png
+    📄 bg01.png
+    📁 campus
+      📄 image01.png
+    📁 cantine
+      📄 cantine01.png
+      📄 cantine02.png
+    📁 logo
+      📄 Logo.png
+      📄 Logo01.png
+      📄 Logo04.png
+      📄 Logo11.png
+      📄 Logo13.png
+      📄 Logo5.png
+      📄 Logo7.png
+      📄 Logo9.png
+    📁 profile
+      📄 profile01.png
+      📄 profile02.png
+      📄 profile03.png
+      📄 profile04.png
+      📄 profile05.png
+      📄 profile06.png
+      📄 profile07.png
+      📄 profile08.png
+    📁 school
+      📄 school.png
+    📁 transport
+      📄 bus01.png
+      📄 bus02.png
+📁 supabase
+  📁 migrations
+    📄 20250327220456_humble_portal.sql
+    📄 20250331120810_fading_poetry.sql
+📄 tailwind.config.ts
+📄 test-auth.js
+📄 test-signup.ts
+📄 test-upload.js
+📄 tsconfig.json
+📁 types
+  📄 menu.ts
+  📄 user.ts

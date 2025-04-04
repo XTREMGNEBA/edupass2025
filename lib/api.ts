@@ -1,21 +1,18 @@
-// API functions for handling user profile operations
-import { UserProfile } from '@/types/user';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import type { UserProfile } from '@/types/user';
 
 export async function fetchUserProfile(userId: string): Promise<UserProfile | null> {
   try {
-    const response = await fetch(`/api/profile/${userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const supabase = createRouteHandlerClient({ cookies });
+    
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || 'Failed to fetch user profile');
-    }
-
-    const data = await response.json();
+    if (error) throw error;
     return data;
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -23,7 +20,7 @@ export async function fetchUserProfile(userId: string): Promise<UserProfile | nu
   }
 }
 
-export async function uploadAvatar(file: File): Promise<{ url: string }> {
+export async function uploadAvatar(file: File): Promise<string> {
   try {
     const formData = new FormData();
     formData.append('avatar', file);
@@ -38,7 +35,7 @@ export async function uploadAvatar(file: File): Promise<{ url: string }> {
     }
 
     const data = await response.json();
-    return data;
+    return data.url;
   } catch (error) {
     console.error('Error uploading avatar:', error);
     throw error;

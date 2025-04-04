@@ -10,18 +10,13 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient({ req, res });
 
   // Refresh session if expired
-  await supabase.auth.getSession();
+  const { data: { session }, error } = await supabase.auth.getSession();
 
   // Routes protégées qui nécessitent une authentification
-  const protectedRoutes = ['/dashboard', '/wallet', '/scanner'];
+  const protectedRoutes = ['/dashboard', '/wallet', '/scanner', '/chatbot'];
 
   // Routes d'authentification
   const authRoutes = ['/auth/login', '/auth/register', '/auth/reset-password'];
-
-  // Get session
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
 
   // Check auth status for protected routes
   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
@@ -30,11 +25,38 @@ export async function middleware(req: NextRequest) {
       redirectUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(redirectUrl);
     }
+
+    // Vérifier le rôle de l'utilisateur pour les routes spécifiques
+    if (pathname.startsWith('/dashboard/')) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+      const role = profile?.role;
+      const rolePrefix = pathname.split('/')[2]; // Ex: /dashboard/admin -> admin
+
+      // Rediriger si l'utilisateur n'a pas le bon rôle
+      if (role && rolePrefix && !pathname.includes(`/dashboard/${role.toLowerCase()}`)) {
+        return NextResponse.redirect(new URL(`/dashboard/${role.toLowerCase()}`, req.url));
+      }
+    }
   }
 
   // Redirect to dashboard if logged in user tries to access auth routes
   if (authRoutes.includes(pathname) && session) {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+
+    const redirectPath = profile?.role 
+      ? `/dashboard/${profile.role.toLowerCase()}`
+      : '/dashboard';
+
+    return NextResponse.redirect(new URL(redirectPath, req.url));
   }
 
   return res;
@@ -45,6 +67,7 @@ export const config = {
     '/dashboard/:path*',
     '/wallet/:path*',
     '/scanner/:path*',
+    '/chatbot/:path*',
     '/auth/:path*',
   ],
 };

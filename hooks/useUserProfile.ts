@@ -1,71 +1,92 @@
- import { useUser } from '@/contexts/user-context';
-import { User as SupabaseUser } from '@supabase/supabase-js';
-import { UserProfile } from '@/types/user';
+"use client";
+
 import { useState, useEffect } from 'react';
-import { fetchUserProfile } from '@/lib/api';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import type { UserProfile } from '@/types/user';
 
 export function useUserProfile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { user } = useUser();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
     const loadProfile = async () => {
-      if (!user) {
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        const userProfile = await fetchUserProfile(user.id);
-        setProfile(userProfile);
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) throw sessionError;
+        if (!session?.user) {
+          setProfile(null);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (error) throw error;
+        setProfile(data);
       } catch (error) {
         console.error('Error loading user profile:', error);
+        setProfile(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadProfile();
-  }, [user]);
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        loadProfile();
+      } else {
+        setProfile(null);
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
 
   const updateProfile = async (formData: Partial<UserProfile>) => {
-    if (!user) return;
-    
     try {
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('Not authenticated');
 
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
-      }
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(formData)
+        .eq('id', session.user.id)
+        .select()
+        .single();
 
-      const updatedProfile = await response.json();
-      setProfile(updatedProfile);
-      return updatedProfile;
+      if (error) throw error;
+      setProfile(data);
+      return data;
     } catch (error) {
       console.error('Error updating profile:', error);
       throw error;
     }
   };
 
-  const deleteProfile = async (userId: string) => {
+  const deleteProfile = async () => {
     try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: 'DELETE',
-      });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error('Not authenticated');
 
-      if (response.ok) {
-        setProfile(null);
-        return true;
-      }
+      const { error } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', session.user.id);
 
-      throw new Error('Failed to delete profile');
+      if (error) throw error;
+      setProfile(null);
+      return true;
     } catch (error) {
       console.error('Error deleting profile:', error);
       return false;

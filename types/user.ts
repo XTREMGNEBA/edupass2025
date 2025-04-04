@@ -24,11 +24,10 @@ export const ROLE_ROUTES: Record<UserRole, string> = {
 };
 
 export const getRouteForRole = (role: UserRole): string => {
-  return ROLE_ROUTES[role] || '/dashboard/parent';
+  return ROLE_ROUTES[role] || '/dashboard';
 };
 
 export interface UserProfile {
-  [x: string]: any;
   id: string;
   email: string;
   first_name: string;
@@ -37,4 +36,5 @@ export interface UserProfile {
   phone?: string;
   created_at: string;
   updated_at?: string;
+  avatar_url?: string;
 }
