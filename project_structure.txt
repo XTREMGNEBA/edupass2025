@@ -7,6 +7,7 @@ Structure du projet (exclusions : node_modules, nhost, .vscode, .nuxt, .output, 
 📁 app
   📁 auth
     📁 callback
+      📄 page.tsx
       📄 route.ts
     📁 login
       📄 page.tsx
@@ -17,19 +18,19 @@ Structure du projet (exclusions : node_modules, nhost, .vscode, .nuxt, .output, 
   📁 chatbot
     📄 page.tsx
   📁 dashboard
-    📁 admin-dev
+    📁 admin
       📄 page.tsx
-    📁 canteen
+    📁 administratif
+      📄 page.tsx
+    📁 cantine
       📄 page.tsx
     📁 finance
       📄 page.tsx
     📄 layout.tsx
-    📁 logistics
+    📁 logistique
       📄 page.tsx
     📄 page.tsx
     📁 parent
-      📄 page.tsx
-    📁 school-admin
       📄 page.tsx
     📁 student
       📄 page.tsx
@@ -144,10 +145,13 @@ Structure du projet (exclusions : node_modules, nhost, .vscode, .nuxt, .output, 
       📄 bus01.png
       📄 bus02.png
 📄 README.md
+📄 secours.md
 📁 supabase
   📁 migrations
     📄 20250325140105_graceful_wildflower.sql
 📄 tailwind.config.ts
+📄 test-auth.js
+📄 test-signup.ts
 📄 tsconfig.json
 📁 types
   📄 user.ts

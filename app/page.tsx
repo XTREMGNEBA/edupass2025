@@ -12,37 +12,53 @@ import {
 } from "@/components/ui/accordion";
 import { QrCode, Wallet, Bell, Star, MessageCircle } from "lucide-react";
 import { Footer } from "@/components/footer";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <>
       <div className="relative">
         {/* Hero Section */}
-        <section className="py-20 text-center">
-          <div className="container">
-            <h1 className="text-4xl font-bold mb-6 md:text-6xl">Bienvenue sur EduPass+ by T. Gogo</h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Votre badge, votre clé pour une école connectée, sans argent liquide
-            </p>
-            <div className="flex justify-center gap-4">
-              <Button size="lg" asChild>
-                <a href="#features">Découvrir</a>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="#contact">Nous contacter</a>
-              </Button>
+        <section className="relative py-20 text-center">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920"
+              alt="École connectée"
+              width={1920}
+              height={1080}
+              className="object-cover w-full h-full brightness-50"
+              priority
+            />
+          </div>
+
+          <div className="container relative z-10">
+            <div className="max-w-3xl mx-auto text-white">
+              <h1 className="text-4xl font-bold mb-6 md:text-6xl">
+                Bienvenue sur EduPass+ by T. Gogo
+              </h1>
+              <p className="text-xl mb-8 text-gray-200">
+                Votre badge, votre clé pour une école connectée, sans argent liquide
+              </p>
+              <div className="flex justify-center gap-4">
+                <Button size="lg" variant="default">
+                  Découvrir
+                </Button>
+                <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
+                  Nous contacter
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-20 bg-accent">
+        <section id="features" className="py-20 bg-background">
           <div className="container">
             <h2 className="text-3xl font-bold text-center mb-12">Nos Fonctionnalités</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <Card id="badge">
+              <Card>
                 <CardHeader>
-                  <QrCode className="h-8 w-8 mb-2" />
+                  <QrCode className="h-8 w-8 mb-2 text-primary" />
                   <CardTitle>Badge Intelligent</CardTitle>
                   <CardDescription>Un seul badge pour tous les services</CardDescription>
                 </CardHeader>
@@ -50,7 +66,7 @@ export default function Home() {
                   <img
                     src="https://images.unsplash.com/photo-1522252234503-e356532cafd5?w=500&h=300&fit=crop"
                     alt="Badge QR Code"
-                    className="rounded-lg mb-4"
+                    className="rounded-lg mb-4 w-full"
                   />
                   <p className="text-sm text-muted-foreground">
                     Accédez à la cantine, aux transports et plus encore avec un seul badge sécurisé.
@@ -58,9 +74,9 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card id="cantine">
+              <Card>
                 <CardHeader>
-                  <Wallet className="h-8 w-8 mb-2" />
+                  <Wallet className="h-8 w-8 mb-2 text-primary" />
                   <CardTitle>Cantine Connectée</CardTitle>
                   <CardDescription>Réservation et paiement simplifiés</CardDescription>
                 </CardHeader>
@@ -68,7 +84,7 @@ export default function Home() {
                   <img
                     src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&h=300&fit=crop"
                     alt="Cantine scolaire"
-                    className="rounded-lg mb-4"
+                    className="rounded-lg mb-4 w-full"
                   />
                   <p className="text-sm text-muted-foreground">
                     Réservez les repas et gérez le solde en quelques clics.
@@ -76,9 +92,9 @@ export default function Home() {
                 </CardContent>
               </Card>
 
-              <Card id="transport">
+              <Card>
                 <CardHeader>
-                  <Bell className="h-8 w-8 mb-2" />
+                  <Bell className="h-8 w-8 mb-2 text-primary" />
                   <CardTitle>Transport Scolaire</CardTitle>
                   <CardDescription>Suivi en temps réel</CardDescription>
                 </CardHeader>
@@ -86,7 +102,7 @@ export default function Home() {
                   <img
                     src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=500&h=300&fit=crop"
                     alt="Bus scolaire"
-                    className="rounded-lg mb-4"
+                    className="rounded-lg mb-4 w-full"
                   />
                   <p className="text-sm text-muted-foreground">
                     Suivez les bus en temps réel et recevez des notifications.
